@@ -46,6 +46,28 @@
 - `ALLOWED_HOSTS` — см [документацию Django](https://docs.djangoproject.com/en/3.1/ref/settings/#allowed-hosts).
 - `DATABASE_NAME` — путь до базы данных, например: `schoolbase.sqlite3`
 
+
+## Взлом базы данных
+
+Чтобы получить доступ к правкам в базе данных следует открыть консоль python:
+
+```
+python3 manage.py shell
+```
+
+Далее ввести команду:
+
+```
+from db_hack import delete_commendations, delete_chastisements, fix_marks, add_commendation
+```
+
+После этого пользоваться командами:
+
+- `delete_commendations('ФАМИЛИЯ ИМЯ УЧЕНИКА')` — удалить все похвалы ученика
+- `delete_chastisements('ФАМИЛИЯ ИМЯ УЧЕНИКА')` — удалить все замечания ученику
+- `fix_marks('ФАМИЛИЯ ИМЯ УЧЕНИКА')` — заменить плохие оценки на хорошие
+- `add_commendation('ФАМИЛИЯ ИМЯ УЧЕНИКА', 'ПРЕДМЕТ')` — добавить похвалу по предмету
+
 ## Цели проекта
 
 Код написан в учебных целях — это урок в курсе по Python и веб-разработке на сайте [Devman](https://dvmn.org).
