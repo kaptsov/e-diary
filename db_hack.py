@@ -4,6 +4,7 @@ from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 
 
 def fix_marks(schoolkid_name):
+    schoolkid = get_schoolkid(schoolkid_name)
     marks = Mark.objects.filter(schoolkid=schoolkid, points__lt=4)
     for mark in marks:
         mark.points = 5
@@ -12,16 +13,14 @@ def fix_marks(schoolkid_name):
 
 def delete_chastisements(schoolkid_name):
     schoolkid = get_schoolkid(schoolkid_name)
-    notes = Chastisement.objects.filter(schoolkid=schoolkid)
-    for note in notes:
-        note.delete()
+    Chastisements = Chastisement.objects.filter(schoolkid=schoolkid)
+    Chastisements.delete()
 
 
 def delete_commendations(schoolkid_name):
     schoolkid = get_schoolkid(schoolkid_name)
-    notes = Commendation.objects.filter(schoolkid=schoolkid)
-    for note in notes:
-        note.delete()
+    Commendations = Commendation.objects.filter(schoolkid=schoolkid)
+    Commendations.delete()
 
 
 def get_commendation():
@@ -68,15 +67,13 @@ def get_schoolkid(schoolkid_name):
         print("Уточните имя, запрос вернул больше одного ученика.")
 
 
-def get_lesson(schoolkid, lesson_title):
-    try:
-        return Lesson.objects.filter(year_of_study=schoolkid.year_of_study, subject__title=title)
-    except ObjectDoesNotExist:
-        print("Такой урок не найден в БД.")
+def get_lessons(schoolkid, lesson_title):
+    return Lesson.objects.filter(year_of_study=schoolkid.year_of_study, subject__title=title)
+
 
 
 def add_commendation(schoolkid_name, title):
     schoolkid = get_schoolkid(schoolkid_name)
-    lesson = random.choice(get_lesson(schoolkid, title))
+    lesson = random.choice(get_lessons(schoolkid, title))
     Commendation.objects.create(text=get_commendation(), created=lesson.date, schoolkid=schoolkid,
                                 subject=lesson.subject, teacher=lesson.teacher)
